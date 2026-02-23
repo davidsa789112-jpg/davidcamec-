@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reliquias de Armorix · El Pokémon más oscuro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0a0c0f;
+            color: #e0e0e0;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* Barra de navegación */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: #0f1215;
+            border-bottom: 2px solid #3a1f1f;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.7);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #a33c3c, #2a1f3a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 8px #7a2e2e;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #bbb;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .nav-links a:hover {
+            color: #c44;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(rgba(5, 5, 10, 0.9), rgba(5, 5, 10, 0.9)), url('https://via.placeholder.com/1920x1080/1a1a2e/666?text=Templo+Aurora') center/cover no-repeat;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 2rem;
+            border-bottom: 4px solid #3a1f1f;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #b44, #749);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px #b22;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            color: #ccc;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            background: transparent;
+            border: 2px solid #b44;
+            color: #b44;
+            padding: 0.8rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            border-radius: 30px;
+            margin: 0.5rem;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #b44;
+            color: #0f1215;
+            box-shadow: 0 0 20px #b44;
+        }
+
+        .btn-sec {
+            border-color: #749;
+            color: #a9a;
+        }
+
+        .btn-sec:hover {
+            background: #749;
+            color: #0f1215;
+            box-shadow: 0 0 20px #749;
+        }
+
+        /* Secciones genéricas */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #b44, #749);
+            margin: 0.5rem auto 0;
+            border-radius: 2px;
+        }
+
+        /* Tarjetas de personajes */
+        .characters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .character-card {
+            background: #151a1f;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #2a2f35;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: default;
+        }
+
+        .character-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px -10px #b44;
+            border-color: #b44;
+        }
+
+        .character-img {
+            height: 200px;
+            background: #1e2329;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #b44;
+            border-bottom: 2px solid #2a2f35;
+        }
+
+        .character-info {
+            padding: 1.5rem;
+        }
+
+        .character-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
+            color: #dda;
+        }
+
+        .character-info .alias {
+            color: #b44;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
+        .character-info p {
+            color: #aaa;
+            font-size: 0.95rem;
+        }
+
+        /* Bloques de lore */
+        .lore-block {
+            background: #151a1f;
+            border-left: 6px solid #b44;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 0 20px 20px 0;
+        }
+
+        .lore-block h3 {
+            font-size: 2rem;
+            color: #dda;
+            margin-bottom: 1rem;
+        }
+
+        .lore-block p {
+            margin-bottom: 1rem;
+            color: #ccc;
+        }
+
+        /* Finales grid */
+        .finales-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .final-card {
+            background: #1b2127;
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-top: 5px solid;
+            transition: 0.2s;
+        }
+
+        .final-card.sanador { border-color: #5a9; }
+        .final-card.sombra { border-color: #b44; }
+        .final-card.solitario { border-color: #777; }
+        .final-card.redencion { border-color: #b90; }
+        .final-card.caos { border-color: #a23; }
+        .final-card.secreto { border-color: #a7a; }
+
+        .final-card h4 {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .final-card p {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Fragmentos */
+        .fragmento {
+            background: #101418;
+            padding: 2rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+            font-style: italic;
+            border: 1px solid #3a2f35;
+            position: relative;
+        }
+
+        .fragmento::before {
+            content: '“';
+            font-size: 5rem;
+            color: #b44;
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            opacity: 0.3;
+        }
+
+        .fragmento p {
+            font-size: 1.3rem;
+            color: #ddd;
+            margin-bottom: 0.5rem;
+        }
+
+        .fragmento small {
+            color: #888;
+            display: block;
+            text-align: right;
+        }
+
+        /* Misterios */
+        .mystery-list {
+            list-style: none;
+        }
+
+        .mystery-list li {
+            background: #151a1f;
+            margin: 1rem 0;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            border-left: 10px solid #b44;
+            font-size: 1.2rem;
+            color: #ddd;
+        }
+
+        /* Footer */
+        footer {
+            background: #0a0c0f;
+            border-top: 2px solid #2a2f35;
+            padding: 3rem 2rem;
+            text-align: center;
+            color: #888;
+        }
+
+        footer a {
+            color: #b44;
+            text-decoration: none;
+        }
+
+        .disclaimer {
+            max-width: 700px;
+            margin: 2rem auto 0;
+            font-size: 0.85rem;
+            background: #151a1f;
+            padding: 1.5rem;
+            border-radius: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 800px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                right: 0;
+                background: #0f1215;
+                width: 200px;
+                padding: 1rem;
+                border-radius: 0 0 0 20px;
+                border-left: 2px solid #b44;
+                border-bottom: 2px solid #b44;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Susurros animados */
+        .whispers {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            color: #b44;
+            font-size: 0.9rem;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 50;
+            animation: whisperAnim 3s infinite;
+        }
+
+        @keyframes whisperAnim {
+            0% { opacity: 0.2; transform: translateY(0); }
+            50% { opacity: 0.6; transform: translateY(-5px); }
+            100% { opacity: 0.2; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="whispers">⚡ Los Susurros te llaman... ⚡</div>
+
+    <nav class="navbar">
+        <div class="logo">RELIQUIAS DE ARMORIX</div>
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <div class="nav-links" id="navLinks">
+            <a href="#inicio">Inicio</a>
+            <a href="#sinopsis">Sinopsis</a>
+            <a href="#personajes">Personajes</a>
+            <a href="#lore">Lore</a>
+            <a href="#finales">Finales</a>
+            <a href="#fragmentos">Fragmentos</a>
+            <a href="#misterios">Misterios</a>
+            <a href="#contacto">Contacto</a>
+        </div>
+    </nav>
+
+    <section id="inicio" class="hero">
+        <h1>RELIQUIAS DE ARMORIX</h1>
+        <p>Kanto no es lo que crees. La historia que conoces es una mentira. Y alguien va a revelar la verdad.</p>
+        <div>
+            <a href="#sinopsis" class="btn">Descubrir</a>
+            <a href="#personajes" class="btn btn-sec">Personajes</a>
+        </div>
+    </section>
+
+    <section id="sinopsis">
+        <h2 class="section-title">SINOPSIS</h2>
+        <div class="lore-block">
+            <p><strong>"Mi padre no era un traidor. Era un hombre que descubrió la verdad. Y por eso lo mataron."</strong></p>
+            <p><strong>Kael</strong> tiene 17 años y un apellido manchado: <strong>Sangre Sucia</strong>. Hijo de Altair, el hombre al que ejecutaron por "traición", vive escondido en Pueblo Paleta con su hermano mayor y una madrastra que los vigila.</p>
+            <p>Pero la verdad no muere. Solo espera. Cuando Kael descubre una carta de su padre, cuando un Pokémon legendario llamado <strong>Armorix</strong> llega herido a sus brazos, cuando su hermano es secuestrado y convertido en <strong>Red</strong> —el campeón perfecto, el arma de ORIGEN—, su vida cambia para siempre.</p>
+            <p>Perseguido por la organización que controla Kanto, marcado por una masacre que no recuerda, atormentado por <strong>Los Susurros</strong> que hablan en su mente, Kael deberá elegir: ¿la venganza? ¿la justicia? ¿o la sanación?</p>
+            <p><em>Seis finales posibles. Una historia. Tu decisión.</em></p>
+        </div>
+    </section>
+
+    <section id="personajes">
+        <h2 class="section-title">PERSONAJES</h2>
+        <div class="characters-grid">
+            <!-- Kael -->
+            <div class="character-card">
+                <div class="character-img">⚔️</div>
+                <div class="character-info">
+                    <h3>KAEL</h3>
+                    <div class="alias">"Sangre Sucia" · 17 años · Recipiente Primordial</div>
+                    <p>Hijo de Altair. Busca a su hermano. Lo llaman "La Sombra". Pero él quiere ser algo más.</p>
+                </div>
+            </div>
+            <!-- Lía -->
+            <div class="character-card">
+                <div class="character-img">💔</div>
+                <div class="character-info">
+                    <h3>LÍA</h3>
+                    <div class="alias">"La Herramienta" · 17 años · Criada en ORIGEN</div>
+                    <p>Amiga de Kael desde niños. Lo traicionará por salvar a su hermano. Y luego tendrá que redimirse.</p>
+                </div>
+            </div>
+            <!-- Eron -->
+            <div class="character-card">
+                <div class="character-img">⚡</div>
+                <div class="character-info">
+                    <h3>ERON</h3>
+                    <div class="alias">"El Juicio" · 19 años · Último Guardián Erion</div>
+                    <p>Su familia fue masacrada. Busca liberar la energía cueste lo que cueste. Es el verdadero villano.</p>
+                </div>
+            </div>
+            <!-- Red -->
+            <div class="character-card">
+                <div class="character-img">🎭</div>
+                <div class="character-info">
+                    <h3>RED</h3>
+                    <div class="alias">"El Héroe Falso" · 19 años · El hermano de Kael</div>
+                    <p>Convertido en arma por Oak. No recuerda quién es. Pero algo dentro de él sigue luchando.</p>
+                </div>
+            </div>
+            <!-- Oak -->
+            <div class="character-card">
+                <div class="character-img">📜</div>
+                <div class="character-info">
+                    <h3>OAK</h3>
+                    <div class="alias">"El Sabio" · Fundador de ORIGEN</div>
+                    <p>Todo lo hace por amor a su hija. Eso lo ha convertido en un monstruo.</p>
+                </div>
+            </div>
+            <!-- Ash -->
+            <div class="character-card">
+                <div class="character-img">⚡</div>
+                <div class="character-info">
+                    <h3>ASH KETCHUM</h3>
+                    <div class="alias">"La Leyenda" · ExSujeto A · ExCampeón</div>
+                    <p>Ahora vive en el exilio. Pero cuando Kael lo necesite, aparecerá.</p>
+                </div>
+            </div>
+            <!-- Gary -->
+            <div class="character-card">
+                <div class="character-img">🔍</div>
+                <div class="character-info">
+                    <h3>GARY OAK</h3>
+                    <div class="alias">"El Investigador" · Nieto de Oak</div>
+                    <p>Busca redimir el apellido de su familia. Ayudará a Kael con información y tecnología.</p>
+                </div>
+            </div>
+            <!-- Oro -->
+            <div class="character-card">
+                <div class="character-img">♟️</div>
+                <div class="character-info">
+                    <h3>ORO (GOLD)</h3>
+                    <div class="alias">"El Estratega" · ExCampeón · Líder de la resistencia</div>
+                    <p>Construyó una red en las sombras para desmantelar ORIGEN. Kael es su martillo.</p>
+                </div>
+            </div>
+            <!-- Leo -->
+            <div class="character-card">
+                <div class="character-img">🔧</div>
+                <div class="character-info">
+                    <h3>LEO</h3>
+                    <div class="alias">"El Corazón" · 20 años · Hermano de Lía · Genio caótico</div>
+                    <p>Sus inventos "inútiles" salvarán al grupo más de una vez. Y su alegría, también.</p>
+                </div>
+            </div>
+            <!-- Newto -->
+            <div class="character-card">
+                <div class="character-img">🌀</div>
+                <div class="character-info">
+                    <h3>NEWTO</h3>
+                    <div class="alias">"El Paciente Cero" · Creación fallida de ORIGEN</div>
+                    <p>Un ser roto que solo conoce dolor. Pero siente curiosidad por Kael.</p>
+                </div>
+            </div>
+            <!-- Armorix -->
+            <div class="character-card">
+                <div class="character-img">✨</div>
+                <div class="character-info">
+                    <h3>ARMORIX</h3>
+                    <div class="alias">"El Vínculo" · Compañero de Kael</div>
+                    <p>Evoluciona con las emociones: Sombra, Bastión, Aurora. Es el reflejo del alma de Kael.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="lore">
+        <h2 class="section-title">LORE OCULTO</h2>
+        <div class="lore-block">
+            <h3>La verdad sobre Oak</h3>
+            <p>El profesor que todos admiran, el héroe de Kanto, es el fundador de ORIGEN. Su hija Camila no murió: está en coma energético. Y él haría cualquier cosa por despertarla.</p>
+        </div>
+        <div class="lore-block">
+            <h3>La tragedia de Red</h3>
+            <p>El campeón que todos adoran no es quien crees. Es un hermano, un hijo, una persona a la que robaron la identidad. Y alguien va a rescatarlo.</p>
+        </div>
+        <div class="lore-block">
+            <h3>El secreto de Armorix</h3>
+            <p>No es un Pokémon legendario normal. Es una manifestación viva del vínculo entre dos almas. Y su evolución no depende de niveles, sino de las emociones de Kael.</p>
+        </div>
+        <div class="lore-block">
+            <h3>Los Susurros</h3>
+            <p><em>"No puedes silenciarlos. Pero puedes aprender a escucharlos."</em> Los Susurros son la maldición de los Recipientes Primordiales. Voces, emociones, recuerdos de otros que se cuelan en tu mente. Si las odias, te controlan. Si las ignoras, te consumen. Si las aceptas... pueden ser tu fuerza.</p>
+        </div>
+    </section>
+
+    <section id="finales">
+        <h2 class="section-title">6 FINALES POSIBLES</h2>
+        <div class="finales-grid">
+            <div class="final-card sanador">
+                <h4>Sanador</h4>
+                <p>Perdón y compasión. Kael restaura el equilibrio.</p>
+            </div>
+            <div class="final-card sombra">
+                <h4>Sombra</h4>
+                <p>Venganza y odio. Kael se vuelve tirano.</p>
+            </div>
+            <div class="final-card solitario">
+                <h4>Solitario</h4>
+                <p>Rechazo y aislamiento. Kael desaparece.</p>
+            </div>
+            <div class="final-card redencion">
+                <h4>Redención de Oak</h4>
+                <p>SANADOR muy alto + objetos ocultos. Oak se redime.</p>
+            </div>
+            <div class="final-card caos">
+                <h4>Caos</h4>
+                <p>Decisiones extremas. La energía se libera sin control.</p>
+            </div>
+            <div class="final-card secreto">
+                <h4>Secreto</h4>
+                <p>Todas las estadísticas equilibradas. Kael Guardián.</p>
+            </div>
+        </div>
+        <p style="text-align:center; margin-top:2rem; color:#aaa;">Cada final desbloquea un código para la secuela: <strong>RELIQUIAS DE ARMORIX: JOHTO</strong>.</p>
+    </section>
+
+    <section id="fragmentos">
+        <h2 class="section-title">FRAGMENTOS DE LA NOVELA</h2>
+        <div class="fragmento">
+            <p>Cuando Kael despertó, tenía sangre en las manos. No recordaba nada. Pero Armorix, a su lado, lo miraba con unos ojos que l
